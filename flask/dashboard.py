@@ -3,8 +3,8 @@ from statistics import mean
 
 app = Flask(__name__)
 
-# Dummy raw data for demonstration
-# Example dummy data
+# CALL DB DATA
+# dummy data
 dummy_data = [
     {'sensor': 'Temperature', 'value': 22, 'timestamp': '2023-02-22 12:00'},
     {'sensor': 'Temperature', 'value': 23, 'timestamp': '2023-02-22 12:01'},
@@ -16,7 +16,7 @@ dummy_data = [
     {'sensor': 'Pressure', 'value': 46, 'timestamp': '2023-02-22 12:01'},
     # Assume more pressure data here...
 ]
-
+# MODIFY AFTER CALL DB DATA
 def prepare_sensor_data(sensor_name):
     # Filter data for the sensor
     sensor_data = [d for d in dummy_data if d['sensor'] == sensor_name]
