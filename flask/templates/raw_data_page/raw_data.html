@@ -1,1 +1,37 @@
-<h1>ASON</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sensor Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='raw_data.css') }}">
+    
+</head>
+<body>
+    {% include 'navbar/navbar.html' %}
+
+    <div class="container">
+        {% for sensor in [temperature, heart_rate, pressure] %}
+        <section>
+            <h2>{{ sensor.name }}</h2>
+            <p>Average Value: <span class="avg-value">{{ sensor.average }}</span> (Latest Timestamp: {{ sensor.timestamp }})</p>
+            <div>
+                <h3>Last 10 Data Points:</h3>
+                <table>
+                    <tr>
+                        <th>Value</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    {% for d in sensor.data %}
+                    <tr>
+                        <td>{{ d.value }}</td>
+                        <td>{{ d.timestamp }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+</body>
+</html>
