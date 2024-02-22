@@ -1,5 +1,6 @@
 import pymongo
-import datetime
+import pytz
+from datetime import datetime
 import calendar
 
 # Setup heartrate collection
@@ -39,7 +40,7 @@ def process_heartrate():
     hrlist = retrieve_all()
     for hr in hrlist:
         print("Rate: " + str(hr['rate']))
-        print("Date Time: " + str(datetime.datetime.fromtimestamp(hr['datetime'])))
+        print("Date Time: " + str(datetime.fromtimestamp(hr['datetime'])))
         if hr['rate'] < 51:
             print("Low Heart rate")
         elif hr['rate'] < 65:
@@ -48,8 +49,13 @@ def process_heartrate():
             print("High Heart rate")
 
 def datetime_to_epoch(year, month, date, hour, minute, second):
-    epoch_datetime = datetime.datetime(year, month, date, hour, minute, second)
-    return calendar.timegm(epoch_datetime.timetuple())
+    utc_now = datetime.utcnow()
+    utc_timezone = pytz.timezone('UTC')
+    utc_now = utc_timezone.localize(utc_now)
+    sg_timezone = pytz.timezone('Asia/Singapore')
+    sg_now = utc_now.astimezone(sg_timezone)
+    epoch_time = calendar.timegm(sg_now.utctimetuple())
+    return epoch_time
 
 
 process_heartrate()
