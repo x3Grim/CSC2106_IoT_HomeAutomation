@@ -17,13 +17,6 @@ def add_one(new_document):
 
 
 def add_many(new_list):
-    mylist = [
-        { "rate": 80, "datetime": datetime_to_epoch() },
-        { "rate": 60, "datetime": datetime_to_epoch() },
-        { "rate": 50, "datetime": datetime_to_epoch() },
-        { "rate": 80, "datetime": datetime_to_epoch() },
-    ]
-
     mycol.insert_many(new_list)
 
     cursor = mycol.find({})
@@ -50,6 +43,10 @@ def retrieve_all():
     return cursor
 # returns list of documents, still need to loop
 
+def retrieve_latest():
+    latest_document = mycol.find_one(sort=[('_id', pymongo.DESCENDING)])
+    print(latest_document)
+
 def update_doc(old_values, new_values):
     mycol.update_one(old_values, { "$set": new_values })
     cursor = mycol.find({})
@@ -60,6 +57,7 @@ def update_doc(old_values, new_values):
 def process_heartrate():
     hrlist = retrieve_all()
     for hr in hrlist:
+        print(hr['_id'])
         print("Rate: " + str(hr['rate']))
         print("Date Time: " + str(datetime.fromtimestamp(hr['datetime']))) # convert epoch to datetime utc
         if hr['rate'] < 51:
@@ -81,4 +79,4 @@ def datetime_to_epoch():
 # convert current time to epoch
 
 
-process_heartrate()
+retrieve_latest()
