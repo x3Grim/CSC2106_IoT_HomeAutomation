@@ -1,40 +1,58 @@
 * {
   box-sizing: border-box;
 }
+
 #wrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+.row.full-width {
+  padding: 0;
+  margin: 0 10px;
 }
 
 .row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 100%;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+width: 100%;
 }
 
 .column {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  justify-content: start;
-  flex-basis: 0;
+display: flex;
+flex-grow: 1;
+flex-direction: column;
+justify-content: start;
+flex-basis: 0;
+padding: 0 20px;
+}
+
+.column.full-width {
+padding: 0;
 }
 
 .sleep_cycle, .heart_rate, .pressure {
-  display: block;
-  outline: 1px solid black;
-  margin: 10px;
-  padding: 10px;
-  width: 100%;
+display: block;
+outline: 1px solid black;
+margin: 10px 0;
+padding: 10px;
+width: 100%;
 }
 
 .sleep_cycle {
-  height: 300px;
+height: 300px;
+}
+
+.heart_rate, .pressure {
+height: 250px;
 }
 
 @media (max-width: 768px) {
   .row {
       flex-direction: column;
+  }
+  .column {
+      padding: 0;
   }
 }
