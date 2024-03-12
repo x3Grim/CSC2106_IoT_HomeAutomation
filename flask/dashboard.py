@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from statistics import mean
 
 app = Flask(__name__)
 
+pressure_data = None
 # CALL DB DATA
 # dummy data
 dummy_data = [
@@ -53,6 +54,22 @@ def raw_data():
                            temperature=temperature_data, 
                            heart_rate=heart_rate_data, 
                            pressure=pressure_data)
+
+@app.route('/api/pressure', methods=['POST'])
+def receive_data():
+    global pressure_data
+    if request.method == 'POST':
+        pressure_data = request.form['vibration']
+        print("Received vibration value:", pressure_data)
+        return "Data received successfully"
+
+@app.route('/api/pressure', methods=['GET'])
+def display_data():
+    global pressure_data
+    if pressure_data is not None:
+        return jsonify({"vibration": pressure_data})
+    else:
+        return jsonify({"error": "No data available"})
 
 if __name__ == '__main__':
     app.run(debug=True)
