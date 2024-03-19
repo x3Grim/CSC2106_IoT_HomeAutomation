@@ -1,6 +1,9 @@
 import pymongo
 import json
 from bson import ObjectId
+import pandas as pd
+import numpy as np
+import joblib
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["iot"]
@@ -24,6 +27,29 @@ def retrieve_latest():
     filtered_document = {key: cursor[key] for key in fields_to_include}
     document_json = json.dumps(filtered_document)
     return json.loads(document_json)
+
+def retrieve_latest_50():
+    document_count = mycol.count_documents({})
+    if document_count >= 50:
+        cursor = mycol.find().sort([('_id', pymongo.DESCENDING)]).limit(50)
+        motion_values = [doc['motion'] for doc in cursor] 
+        df = pd.DataFrame(columns=[f'motion{i+1}' for i in range(50)])
+        df.loc[0] = motion_values
+        clf_loaded = joblib.load('motion_model.pkl')
+        predictions = clf_loaded.predict(df)
+        print("\nPredictions for the dummy data:")
+        sleep = 0
+        for pred in enumerate(predictions):
+            if pred == 1:
+                sleep = 1
+                print(1)
+            else:
+                sleep = 0
+                print(0)
+        return sleep
+    else:
+        print('None')
+        return None
 
 def bson_to_string(obj):
     if isinstance(obj, ObjectId):
@@ -56,22 +82,4 @@ def bson_to_string(obj):
 #         print(document)
 
 
-def testing_ai():
-    move = 0
-    still = 0
-    cursor = mycol.find({}, sort=[('_id', pymongo.DESCENDING)])
-    for document in cursor:
-        fields_to_include = ['motion']
-        filtered_document = {key: document[key] for key in fields_to_include}
-        document_json = json.dumps(filtered_document)
-        if json.loads(document_json)['motion'] == 1:
-            move += 1
-        else:
-            still += 1
-    if move < still:
-        print('Asleep')
-    else:
-        print('Awake')
-    
-
-# testing_ai()
+retrieve_latest_50()

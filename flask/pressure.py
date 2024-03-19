@@ -60,47 +60,6 @@ def bson_to_string(obj):
         return [bson_to_string(item) for item in obj]
     return obj
 
-# def add_many(new_list):
-#     mycol.insert_many(new_list)
-
-#     cursor = mycol.find({})
-#     for document in cursor:
-#         print(document)
-
-# def del_all():
-#     x = mycol.delete_many({})
-#     print(x.deleted_count, " documents deleted.")
-
-# def del_one(del_document):
-#     mycol.delete_one(del_document)
-
-
-# def update_doc(old_values, new_values):
-#     mycol.update_one(old_values, { "$set": new_values })
-#     cursor = mycol.find({})
-#     for document in cursor:
-#         print(document)
-
-
-def test_all():
-    asleep = 0
-    not_asleep = 0
-    cursor = mycol.find({}, sort=[('_id', pymongo.DESCENDING)])
-    for document in cursor:
-        fields_to_include = ['pressure']
-        filtered_document = {key: document[key] for key in fields_to_include}
-        document_json = json.dumps(filtered_document)
-        if json.loads(document_json)['pressure'] < 1000:
-            not_asleep += 1
-        else:
-            asleep += 1
-    if asleep > not_asleep:
-        print('Asleep')
-    else:
-        print('Awake')
-    
-
-# test_all()
 
 
 retrieve_latest_100()
