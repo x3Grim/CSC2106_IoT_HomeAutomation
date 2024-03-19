@@ -24,10 +24,10 @@
 
 {% for prediction in predictions %}
 <tr>
-  <td>{{ prediction.pressure }}</td>
-  <td>{{ prediction.motion }}</td>
-  <td>{{ prediction.sleep }}</td>
-  <td>{{ prediction.timestamp }}</td>
+  <td>Pressure: {{ prediction.pressure }}</td>
+  <td>Motion: {{ prediction.motion }}</td>
+  <td>Sleep: {{ prediction.sleep }}</td>
+  <td>Temperature: {{ prediction.aircon }}</td>
 </tr>
 {% endfor %}
 
