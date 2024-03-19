@@ -82,4 +82,4 @@ def bson_to_string(obj):
 #         print(document)
 
 
-retrieve_latest_50()
+# retrieve_latest_50()

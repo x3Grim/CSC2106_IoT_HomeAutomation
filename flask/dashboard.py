@@ -7,13 +7,26 @@ import pressure
 import motion
 import threading
 import time
+import pymongo
 
 app = Flask(__name__)
 
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["iot"]
+predcol = mydb["predictions"]
+
 def periodic_task():
-    while True:
-        print(f'Pressure prediction: {pressure.retrieve_latest_100()}')
-        time.sleep(180)
+    try:
+        while True:
+            pressure_prediction = pressure.retrieve_latest_100()
+            motion_prediction = motion.retrieve_latest_50()
+            print(f'Pressure prediction: {pressure_prediction}')
+            print(f'Motion prediction: {motion_prediction}')
+            predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction })
+            print("test")
+            time.sleep(180)
+    except Exception as e:
+        print(f"Error in periodic task: {e}")
 
 pressure_data = None
 motion_data = None
@@ -114,5 +127,5 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 thread = threading.Thread(target=periodic_task)
-thread.daemon = True  # Daemonize the thread so it terminates with the main process
+thread.daemon = True
 thread.start()
