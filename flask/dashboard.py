@@ -5,6 +5,7 @@ from datetime import datetime
 import calendar
 import pressure
 import motion
+import sleep
 import threading
 import time
 import pymongo
@@ -32,6 +33,7 @@ def periodic_task():
 
 pressure_data = None
 motion_data = None
+sleep_data = None
 
 # CALL DB DATA
 # dummy data
@@ -84,6 +86,7 @@ def raw_data():
                            heart_rate=heart_rate_data, 
                            pressure=pressure_data)
 
+# Pressure POST and GET
 @app.route('/api/pressure', methods=['POST'])
 def receive_pressure_data():
     global pressure_data
@@ -100,6 +103,7 @@ def get_all_pressure_data():
 def get_latest_pressure_data():
     return jsonify(pressure.retrieve_latest())
 
+# Motion POST and GET
 @app.route('/api/motion', methods=['POST'])
 def receive_motion_data():
     global motion_data
@@ -115,7 +119,24 @@ def get_all_motion_data():
 @app.route('/api/latestmotion', methods=['GET'])
 def get_latest_motion_data():
     return jsonify(motion.retrieve_latest())
-    
+
+# Sleep POST and GET
+@app.route('/api/sleep', methods=['POST'])
+def receive_sleep_data():
+    global sleep_data
+    if request.method == 'POST':
+        sleep_data = request.form['state']
+        sleep.add_one({ "sleep": int(sleep_data), "timestamp": datetime_to_epoch() })
+        return "Sleep state received and inserted successfully"
+
+@app.route('/api/sleep', methods=['GET'])
+def get_all_sleep_data():
+    return Response(sleep.retrieve_all(), mimetype='application/json')
+
+@app.route('/api/latestsleep', methods=['GET'])
+def get_latest_sleep_data():
+    return jsonify(sleep.retrieve_latest())
+
 def datetime_to_epoch():
     utc_now = datetime.utcnow()
     utc_timezone = pytz.timezone('UTC')
