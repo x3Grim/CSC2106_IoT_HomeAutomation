@@ -12,8 +12,7 @@ app = Flask(__name__)
 
 def periodic_task():
     while True:
-        print("Running periodic task...")
-        # Your task logic goes here
+        print(f'Pressure prediction: {pressure.retrieve_latest_100()}')
         time.sleep(180)
 
 pressure_data = None
@@ -101,10 +100,6 @@ def get_all_motion_data():
 @app.route('/api/latestmotion', methods=['GET'])
 def get_latest_motion_data():
     return jsonify(motion.retrieve_latest())
-
-@app.route('/api/pressurepred', methods=['GET'])
-def get_pressure_prediction():
-    return f'Pressure prediction: {pressure.retrieve_latest_100()}'
     
 def datetime_to_epoch():
     utc_now = datetime.utcnow()
