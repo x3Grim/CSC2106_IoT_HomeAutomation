@@ -37,18 +37,18 @@ def retrieve_latest_100():
         df.loc[0] = pressure_values
         clf_loaded = joblib.load('pressure_model.pkl')
         predictions = clf_loaded.predict(df)
-        print("\nPredictions for the dummy data:")
+        # print("\nPredictions for the dummy data:")
         sleep = 0
         for pred in enumerate(predictions):
             if pred == 1:
                 sleep = 1
-                print(1)
+                # print(1)
             else:
                 sleep = 0
-                print(0)
+                # print(0)
         return sleep
     else:
-        print('None')
+        # print('None')
         return None
 
 def bson_to_string(obj):

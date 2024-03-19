@@ -20,10 +20,12 @@ def periodic_task():
         while True:
             pressure_prediction = pressure.retrieve_latest_100()
             motion_prediction = motion.retrieve_latest_50()
+            if pressure_prediction is None or motion_prediction is None:
+                break
             print(f'Pressure prediction: {pressure_prediction}')
             print(f'Motion prediction: {motion_prediction}')
+            
             predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction })
-            print("test")
             time.sleep(180)
     except Exception as e:
         print(f"Error in periodic task: {e}")
