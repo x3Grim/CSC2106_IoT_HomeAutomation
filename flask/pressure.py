@@ -54,3 +54,24 @@ def bson_to_string(obj):
 #     cursor = mycol.find({})
 #     for document in cursor:
 #         print(document)
+
+
+def test_all():
+    asleep = 0
+    not_asleep = 0
+    cursor = mycol.find({}, sort=[('_id', pymongo.DESCENDING)])
+    for document in cursor:
+        fields_to_include = ['pressure']
+        filtered_document = {key: document[key] for key in fields_to_include}
+        document_json = json.dumps(filtered_document)
+        if json.loads(document_json)['pressure'] < 1000:
+            not_asleep += 1
+        else:
+            asleep += 1
+    if asleep > not_asleep:
+        print('Asleep')
+    else:
+        print('Awake')
+    
+
+test_all()
