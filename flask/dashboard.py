@@ -1,5 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from statistics import mean
+import pytz
+from datetime import datetime
+import calendar
+import pressure
 
 app = Flask(__name__)
 
@@ -56,20 +60,29 @@ def raw_data():
                            pressure=pressure_data)
 
 @app.route('/api/pressure', methods=['POST'])
-def receive_data():
+def receive_pressure_data():
     global pressure_data
     if request.method == 'POST':
         pressure_data = request.form['vibration']
-        print("Received vibration value:", pressure_data)
-        return "Data received successfully"
+        pressure.add_one({ "pressure": int(pressure_data), "timestamp": datetime_to_epoch() })
+        return "Pressure received and inserted successfully"
 
 @app.route('/api/pressure', methods=['GET'])
-def display_data():
-    global pressure_data
-    if pressure_data is not None:
-        return jsonify({"vibration": pressure_data})
-    else:
-        return jsonify({"error": "No data available"})
+def get_all_pressure_data():
+    return Response(pressure.retrieve_all(), mimetype='application/json')
+
+@app.route('/api/latestpressure', methods=['GET'])
+def get_latest_pressure_data():
+    return jsonify(pressure.retrieve_latest())
+    
+def datetime_to_epoch():
+    utc_now = datetime.utcnow()
+    utc_timezone = pytz.timezone('UTC')
+    utc_now = utc_timezone.localize(utc_now)
+    sg_timezone = pytz.timezone('Asia/Singapore')
+    sg_now = utc_now.astimezone(sg_timezone)
+    epoch_time = calendar.timegm(sg_now.utctimetuple())
+    return epoch_time
 
 if __name__ == '__main__':
     app.run(debug=True)
