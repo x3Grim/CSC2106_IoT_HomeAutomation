@@ -2,6 +2,8 @@ import pymongo
 import json
 from bson import ObjectId
 import pandas as pd
+import numpy as np
+import joblib
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["iot"]
@@ -31,9 +33,22 @@ def retrieve_latest_100():
     if document_count >= 100:
         cursor = mycol.find().sort([('_id', pymongo.DESCENDING)]).limit(100)
         pressure_values = [doc['pressure'] for doc in cursor]
-        df = pd.DataFrame({'pressure': pressure_values})
-        return df
+        df = pd.DataFrame(columns=[f'pressure{i+1}' for i in range(100)])
+        df.loc[0] = pressure_values
+        clf_loaded = joblib.load('model.pkl')
+        predictions = clf_loaded.predict(df)
+        print("\nPredictions for the dummy data:")
+        sleep = 0
+        for pred in enumerate(predictions):
+            if pred == 1:
+                sleep = 1
+                print(1)
+            else:
+                sleep = 0
+                print(0)
+        return sleep
     else:
+        print('None')
         return None
 
 def bson_to_string(obj):
@@ -86,3 +101,6 @@ def test_all():
     
 
 # test_all()
+
+
+retrieve_latest_100()
