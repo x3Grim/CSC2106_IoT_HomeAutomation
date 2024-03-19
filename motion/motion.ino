@@ -16,9 +16,16 @@
 #define RADAR_SERIAL_TIMEOUT 1000 // Timeout in milliseconds
 #define RADAR_SERIAL_RX_PIN 20     // RX pin for the radar sensor
 
+// Timo's WiFi credentials
+// const char* ssid = "TimoGS21";
+// const char* password = "eueo9438";
+// const char* serverAddress = "192.168.40.194";
+
+// Timo's WiFi credentials
 const char* ssid = "aced7hs";
 const char* password = "a123456b";
 const char* serverAddress = "192.168.146.49"; // IP address of your Raspberry Pi Flask server
+
 const int serverPort = 5000; // Port on which Flask server is running
 
 // Function to check for motion detection
@@ -62,7 +69,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("Connected to WiFi");
+  Serial.println("\nConnected to WiFi");
 }
 
 void loop() {
