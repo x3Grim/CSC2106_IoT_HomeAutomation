@@ -1,17 +1,21 @@
 // Include required libraries
-#include <SoftwareSerial.h>
+#include "Arduino.h"
 
 // Define pin numbers for serial communication
-#define LD2420_RX_PIN 2
-#define LD2420_TX_PIN 3
+#define LD2420_RX_PIN 20
+#define LD2420_TX_PIN 21
+#define LD2420_PRESENCE_PIN 5
 
-// Create a SoftwareSerial object to communicate with the LD2420 sensor
-SoftwareSerial ld2420Serial(LD2420_RX_PIN, LD2420_TX_PIN);
+// Create a HardwareSerial object to communicate with the LD2420 sensor
+HardwareSerial ld2420Serial(1); // Use Serial1 for ESP32C3 Super Mini
 
 void setup() {
   // Initialize serial communication
-  Serial.begin(9600);
-  ld2420Serial.begin(115200); // Baud rate for LD2420 sensor
+  Serial.begin(115200);
+  ld2420Serial.begin(115200, SERIAL_8N1, LD2420_RX_PIN, LD2420_TX_PIN);
+
+  // Set the Presence Signal Output pin
+  pinMode(LD2420_PRESENCE_PIN, INPUT);
 
   // Initialize LD2420 sensor
   initializeLD2420();
@@ -32,19 +36,14 @@ void initializeLD2420() {
   // Send any initialization commands if needed
   // For example, setting operating mode
   // You can send commands via UART to configure the sensor
+  Serial.println("Initialize!");
 }
 
 // Function to check for motion detection
 bool motionDetected() {
-  // Check for available data from LD2420 sensor
-  if (ld2420Serial.available() > 0) {
-    // Read data from LD2420 sensor
-    // Parse the data to detect motion
-    // Example: if presence signal is HIGH, return true
-    // Modify this according to your LD2420 sensor's data format
-    if (ld2420Serial.read() == HIGH) {
-      return true;
-    }
+  // Check for presence signal from LD2420 sensor
+  if (digitalRead(LD2420_PRESENCE_PIN) == LOW) {
+    return true;
   }
   return false;
 }
