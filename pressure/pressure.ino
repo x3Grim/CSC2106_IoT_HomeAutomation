@@ -22,7 +22,6 @@ void setup() {
 void loop() {
   int val;
   val = analogRead(0);
-  
   // Send vibration value to Flask server
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
