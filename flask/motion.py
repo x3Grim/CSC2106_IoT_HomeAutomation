@@ -11,7 +11,7 @@ def add_one(new_document):
 
 def retrieve_all():
     cursor = mycol.find({})
-    fields_to_include = ['motion']
+    fields_to_include = ['motion', "timestamp"]
     cursor_list = [bson_to_string(doc) for doc in cursor]
     filtered_cursor_list = [{key: doc[key] for key in fields_to_include} for doc in cursor_list]
     # cursor_json = json.dumps(cursor_list) # display all fields
