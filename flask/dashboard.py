@@ -4,6 +4,7 @@ import pytz
 from datetime import datetime
 import calendar
 import pressure
+import motion
 
 app = Flask(__name__)
 
@@ -74,6 +75,22 @@ def get_all_pressure_data():
 @app.route('/api/latestpressure', methods=['GET'])
 def get_latest_pressure_data():
     return jsonify(pressure.retrieve_latest())
+
+@app.route('/api/motion', methods=['POST'])
+def receive_motion_data():
+    global motion_data
+    if request.method == 'POST':
+        motion_data = request.form['movement']
+        motion.add_one({ "motion": int(motion_data), "timestamp": datetime_to_epoch() })
+        return "Motion received and inserted successfully"
+
+@app.route('/api/motion', methods=['GET'])
+def get_all_motion_data():
+    return Response(motion.retrieve_all(), mimetype='application/json')
+
+@app.route('/api/latestmotion', methods=['GET'])
+def get_latest_motion_data():
+    return jsonify(motion.retrieve_latest())
     
 def datetime_to_epoch():
     utc_now = datetime.utcnow()

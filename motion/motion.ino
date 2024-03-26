@@ -68,7 +68,7 @@ void setup() {
 
 void loop() {
   int val;
-  // Send vibration value to Flask server
+  // Send motion value to Flask server
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     if (client.connect(serverAddress, serverPort)) {
@@ -80,7 +80,7 @@ void loop() {
         val = 0;
         Serial.println("No motion detected!");
       }
-      String postData = "motion=" + String(val);
+      String postData = "movement=" + String(val);
       client.println("POST /api/motion HTTP/1.1");
       client.println("Host: " + String(serverAddress));
       client.println("Content-Type: application/x-www-form-urlencoded");
