@@ -44,7 +44,6 @@ bool motionDetected() {
       return true; // Motion detected
     }
   }
-
   return false; // No motion detected
 }
 
@@ -63,7 +62,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-
+  Serial.println("Connected to WiFi");
 }
 
 void loop() {
