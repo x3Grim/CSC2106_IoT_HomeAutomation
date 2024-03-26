@@ -74,4 +74,4 @@ def test_all():
         print('Awake')
     
 
-test_all()
+# test_all()

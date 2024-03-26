@@ -74,4 +74,4 @@ def testing_ai():
         print('Awake')
     
 
-testing_ai()
+# testing_ai()
