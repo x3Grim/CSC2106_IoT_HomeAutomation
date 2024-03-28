@@ -5,8 +5,16 @@ from datetime import datetime
 import calendar
 import pressure
 import motion
+import threading
+import time
 
 app = Flask(__name__)
+
+def periodic_task():
+    while True:
+        print("Running periodic task...")
+        # Your task logic goes here
+        time.sleep(180)
 
 pressure_data = None
 # CALL DB DATA
@@ -103,3 +111,7 @@ def datetime_to_epoch():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+thread = threading.Thread(target=periodic_task)
+thread.daemon = True  # Daemonize the thread so it terminates with the main process
+thread.start()
