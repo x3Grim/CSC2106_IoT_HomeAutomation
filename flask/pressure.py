@@ -1,6 +1,7 @@
 import pymongo
 import json
 from bson import ObjectId
+import pandas as pd
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["iot"]
@@ -24,6 +25,16 @@ def retrieve_latest():
     filtered_document = {key: cursor[key] for key in fields_to_include}
     document_json = json.dumps(filtered_document)
     return json.loads(document_json)
+
+def retrieve_latest_100():
+    document_count = mycol.count_documents({})
+    if document_count >= 100:
+        cursor = mycol.find().sort([('_id', pymongo.DESCENDING)]).limit(100)
+        pressure_values = [doc['pressure'] for doc in cursor]
+        df = pd.DataFrame({'pressure': pressure_values})
+        return df
+    else:
+        return None
 
 def bson_to_string(obj):
     if isinstance(obj, ObjectId):

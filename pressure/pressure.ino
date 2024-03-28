@@ -36,6 +36,6 @@ void loop() {
       client.println(postData);
       Serial.print("Sent to flask");
     }
-    delay(2000);
+    delay(1000);
   }
 }
