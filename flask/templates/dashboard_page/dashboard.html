@@ -22,6 +22,15 @@
     </div>
 </div>
 
+{% for prediction in predictions %}
+<tr>
+  <td>{{ prediction.pressure }}</td>
+  <td>{{ prediction.motion }}</td>
+  <td>{{ prediction.sleep }}</td>
+  <td>{{ prediction.timestamp }}</td>
+</tr>
+{% endfor %}
+
 <div class="row">
     <div class="column">
         <h2>Heart Rate</h2>

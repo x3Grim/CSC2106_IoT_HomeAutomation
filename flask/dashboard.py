@@ -37,6 +37,11 @@ pressure_data = None
 motion_data = None
 sleep_data = None
 
+# Function to retrieve data from MongoDB collection
+def get_predictions():
+    predictions = list(predcol.find())
+    return predictions
+
 # CALL DB DATA
 # dummy data
 dummy_data = [
@@ -73,7 +78,9 @@ def prepare_sensor_data(sensor_name):
 # This is the main page of the website which is the dashboard
 @app.route("/")
 def dashboard():
-    return render_template('dashboard_page/dashboard.html')
+    # Retrieve data from MongoDB collection
+    predictions = get_predictions()
+    return render_template('dashboard_page/dashboard.html', predictions=predictions)
 
 # This is the second page of the website which is the raw data
 @app.route("/rawdata")
