@@ -5,6 +5,25 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+    <style>
+        .center-table {
+            width: 100%; /* Set table width to 100% */
+	    border-collapse: collapse; /* Collapse border spacing */
+        }
+
+        .center-table th,
+        .center-table td {
+	    border: 1px solid black; /* Add border to table cells */
+            padding: 8px; /* Add padding for better readability */
+	    text-align: center;
+        }
+
+        .center-table th {
+            background-color: #f2f2f2; /* Add background color to table header */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -12,6 +31,28 @@
   {% include 'navbar/navbar.html' %}
 
 <div id="wrapper">
+
+<h2>Predictions Table</h2>
+    <table class="center-table">
+        <thead>
+            <tr>
+                <th>Pressure</th>
+                <th>Motion</th>
+                <th>Sleep</th>
+                <th>Temperature</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{ prediction.pressure }}</td>
+                <td>{{ prediction.motion }}</td>
+                <td>{{ prediction.sleep }}</td>
+                <td>{{ prediction.temperature }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
   
   <div class="row full-width">
     <h2>Sleep Cycle</h2>
@@ -22,15 +63,6 @@
     </div>
 </div>
 
-{% for prediction in predictions %}
-<tr>
-  <td>Pressure: {{ prediction.pressure }}</td>
-  <td>Motion: {{ prediction.motion }}</td>
-  <td>Sleep: {{ prediction.sleep }}</td>
-  <td>Temperature: {{ prediction.temperature }}</td>
-</tr>
-{% endfor %}
-
 <div class="row">
     <div class="column">
         <h2>Heart Rate</h2>
@@ -40,10 +72,11 @@
     <div class="column">
         <h2>Pressure</h2>
         <div class="pressure"></div>
-    </div>
+  </div>
 </div>
 
 </div>
 
 </body>
 </html>
+
