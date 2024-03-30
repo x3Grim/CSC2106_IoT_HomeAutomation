@@ -17,6 +17,8 @@ def periodic_task():
         time.sleep(180)
 
 pressure_data = None
+motion_data = None
+
 # CALL DB DATA
 # dummy data
 dummy_data = [
