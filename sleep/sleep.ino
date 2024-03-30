@@ -3,8 +3,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "xxxx";
-const char* password = "xxxx";
+const char* ssid = "xxxxx";
+const char* password = "xxxxx";
 const char* serverAddress = "192.168.146.49"; // IP address of your Raspberry Pi Flask server
 const int serverPort = 5000; // Port on which Flask server is running
 
@@ -28,43 +28,22 @@ void setup() {
   Serial.println("Connected to WiFi");
 }
 
-
 int sleep_state() {
   radar.SleepInf_Decode();         
   if (radar.sensor_report != 0x00) {
     switch(radar.sensor_report){
-      case OUTBED:
-        Serial.println("Sensor detects someone currently leaving the bed.");
-        Serial.println("----------------------------");
-        return 1;
-      case INBED:
-        Serial.println("Sensor detects that someone is currently in bed.");
-        Serial.println("----------------------------");
-        return 2;
-      case NOINOUT:
-        Serial.println("No subject is detected leaving or going to bed.");
-        Serial.println("----------------------------");
-        return 3;
-      case SLEEPAWAKE:
-        Serial.println("Sensor detects that the monitoring people is awake.");
-        Serial.println("----------------------------");
-        return 4;
       case SLEEPLIGHT:
         Serial.println("Sensor detects that the monitoring people is in light sleeping.");
         Serial.println("----------------------------");
-        return 5;
+        return 1;
       case SLEEPDEEP:
         Serial.println("Sensor detects that the monitoring people is in deep sleeping.");
         Serial.println("----------------------------");
-        return 6;
-      case SLEEPNONE:
-        Serial.println("Sleep state of the object is not detected.");
-        Serial.println("----------------------------");
-        return 7;
+        return 1;
     }
   }
   else{
-      Serial.println("No sleep state reported.");
+      Serial.println("Not in sleep state.");
       return 0;
     }
 }
@@ -87,6 +66,6 @@ void loop()
       client.println(postData);
       Serial.print("Sent to flask");
     }
-
+  }
   delay(2000);
 }
