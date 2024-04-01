@@ -17,25 +17,24 @@ mydb = myclient["iot"]
 predcol = mydb["predictions"]
 
 def periodic_task():
-    try:
-        while True:
-            pressure_prediction = pressure.retrieve_latest_100()
-            motion_prediction = motion.retrieve_latest_50()
-            if pressure_prediction is None or motion_prediction is None:
-                break
-            print(f'Pressure prediction: {pressure_prediction}')
-            print(f'Motion prediction: {motion_prediction}')
-            sleep = 0
-            temperature = "decrease"
-            temperature_current = 23
-            if (pressure_prediction + motion_prediction) > 1:
-                sleep = 1 
-                temperature = "increase"
-                temperature_current = 25
-            predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature_current })
-            time.sleep(120)
-    except Exception as e:
-        print(f"Error in periodic task: {e}")
+    while True:
+        pressure_prediction = pressure.retrieve_latest_100()
+        motion_prediction = motion.retrieve_latest_50()
+        if pressure_prediction is None or motion_prediction is None:
+            print("None, wait 1 minute")
+            time.sleep(60)
+            continue
+        print(f'Pressure prediction: {pressure_prediction}')
+        print(f'Motion prediction: {motion_prediction}')
+        sleep = 0
+        temperature = "decrease"
+        temperature_current = 23
+        if (pressure_prediction + motion_prediction) > 1:
+            sleep = 1 
+            temperature = "increase"
+            temperature_current = 25
+        predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature_current })
+        time.sleep(120)
 
 pressure_data = None
 motion_data = None
