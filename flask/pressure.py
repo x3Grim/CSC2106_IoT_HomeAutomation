@@ -37,12 +37,13 @@ def retrieve_latest_100():
         df.loc[0] = pressure_values
         clf_loaded = joblib.load('pressure_model2.pkl')
         predictions = clf_loaded.predict(df)
-        sleep = 0
-        for pred in enumerate(predictions):
-            if pred == 1:
-                sleep = 1
-            else:
-                sleep = 0
+        # sleep = 0
+        # for pred in enumerate(predictions):
+        #     if pred == 1:
+        #         sleep = 1
+        #     else:
+        #         sleep = 0
+        sleep = int(predictions[0])
         print("Pressure: ", sleep)
         return sleep
     else:
