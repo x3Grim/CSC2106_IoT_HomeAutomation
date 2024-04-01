@@ -27,11 +27,13 @@ def periodic_task():
             print(f'Motion prediction: {motion_prediction}')
             sleep = 0
             temperature = "decrease"
+            temperature_current = 23
             if (pressure_prediction + motion_prediction) > 1:
                 sleep = 1 
                 temperature = "increase"
-            predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature })
-            time.sleep(180)
+                temperature_current = 25
+            predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature_current })
+            time.sleep(120)
     except Exception as e:
         print(f"Error in periodic task: {e}")
 

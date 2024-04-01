@@ -38,6 +38,7 @@ def retrieve_latest_100():
         clf_loaded = joblib.load('pressure_model.pkl')
         predictions = clf_loaded.predict(df)
         # print("\nPredictions for the dummy data:")
+        mycol.delete_many({})
         sleep = 0
         for pred in enumerate(predictions):
             if pred == 1:
