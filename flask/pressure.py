@@ -38,7 +38,6 @@ def retrieve_latest_100():
         clf_loaded = joblib.load('pressure_model.pkl')
         predictions = clf_loaded.predict(df)
         # print("\nPredictions for the dummy data:")
-        mycol.delete_many({})
         sleep = 0
         for pred in enumerate(predictions):
             if pred == 1:
@@ -51,6 +50,9 @@ def retrieve_latest_100():
     else:
         # print('None')
         return None
+
+def delete_all():
+    mycol.delete_many({})
 
 def bson_to_string(obj):
     if isinstance(obj, ObjectId):
