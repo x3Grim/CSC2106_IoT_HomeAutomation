@@ -33,10 +33,11 @@ def periodic_task():
             sleep = 1 
             temperature = "increase"
             temperature_current = 25
-        pressure.delete_all()
-        motion.delete_all()
+        # pressure.delete_all()
+        # motion.delete_all()
         predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature_current })
         time.sleep(120)
+
 
 pressure_data = None
 motion_data = None
@@ -85,7 +86,10 @@ def prepare_sensor_data(sensor_name):
 def dashboard():
     # Retrieve data from MongoDB collection
     predictions = get_predictions()
-    return render_template('dashboard_page/dashboard.html', predictions=predictions)
+    seeed = sleep.retrieve_all()
+    return render_template('dashboard_page/dashboard.html', 
+                           predictions=predictions,
+                           seeed = seeed)
 
 # This is the second page of the website which is the raw data
 @app.route("/rawdata")

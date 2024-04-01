@@ -42,10 +42,11 @@ def retrieve_latest_50():
         for pred in enumerate(predictions):
             if pred == 1: # sleep
                 sleep = 1
-                # print(1)
+                print("Motion sleep: ", 1)
             else:
                 sleep = 0
-                # print(0)
+                print("Motion sleep: ", 0)
+        print("Motion sleep: ", sleep)
         return sleep
     else:
         # print('None')
