@@ -40,7 +40,7 @@ def retrieve_latest_50():
         # print("\nPredictions for the dummy data:")
         sleep = 0
         for pred in enumerate(predictions):
-            if pred == 1:
+            if pred == 1: # sleep
                 sleep = 1
                 # print(1)
             else:

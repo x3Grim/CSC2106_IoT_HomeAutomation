@@ -35,18 +35,12 @@ def retrieve_latest_100():
         pressure_values = [doc['pressure'] for doc in cursor]
         df = pd.DataFrame(columns=[f'pressure{i+1}' for i in range(100)])
         df.loc[0] = pressure_values
-        clf_loaded = joblib.load('pressure_model.pkl')
+        clf_loaded = joblib.load('pressure_model2.pkl')
         predictions = clf_loaded.predict(df)
         # print("\nPredictions for the dummy data:")
         mycol.delete_many({})
-        sleep = 0
-        for pred in enumerate(predictions):
-            if pred == 1:
-                sleep = 1
-                # print(1)
-            else:
-                sleep = 0
-                # print(0)
+        sleep = predictions[0]
+        print("Sleep: ", sleep)
         return sleep
     else:
         # print('None')
