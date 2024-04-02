@@ -77,7 +77,9 @@ void loop() {
   // Send motion value to Flask server
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
+    Serial.println("First if");
     if (client.connect(serverAddress, serverPort)) {
+      Serial.println("Second if");
       // Check for motion detection
       if (motionDetected()) {
         val = 1;
@@ -90,11 +92,12 @@ void loop() {
       client.println("POST /api/motion HTTP/1.1");
       client.println("Host: " + String(serverAddress));
       client.println("Content-Type: application/x-www-form-urlencoded");
-      client.print("Content-Length: ");
+      client.println("Content-Length: ");
       client.println(postData.length());
       client.println();
       client.println(postData);
-      Serial.print("Sent to flask");
+      Serial.println("Sent to flask");
+      Serial.println(postData);
     }
 
     // Delay before next iteration

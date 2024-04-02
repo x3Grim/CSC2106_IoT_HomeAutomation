@@ -33,6 +33,8 @@ def periodic_task():
             sleep = 1 
             temperature = "increase"
             temperature_current = 25
+        pressure.delete_all()
+        motion.delete_all()
         predcol.insert_one({ "pressure": pressure_prediction, "motion": motion_prediction, "sleep": sleep, "temperature": temperature_current })
         time.sleep(120)
 

@@ -46,6 +46,9 @@ def retrieve_latest_100():
         # print('None')
         return None
 
+def delete_all():
+    mycol.delete_many({})
+
 def bson_to_string(obj):
     if isinstance(obj, ObjectId):
         return str(obj)
