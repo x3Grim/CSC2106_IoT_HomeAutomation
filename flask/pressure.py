@@ -35,7 +35,7 @@ def retrieve_latest_100():
         pressure_values = [doc['pressure'] for doc in cursor]
         df = pd.DataFrame(columns=[f'pressure{i+1}' for i in range(100)])
         df.loc[0] = pressure_values
-        clf_loaded = joblib.load('pressure_model2.pkl')
+        clf_loaded = joblib.load('pressure_model.pkl')
         predictions = clf_loaded.predict(df)
         # sleep = 0
         # for pred in enumerate(predictions):

@@ -22,8 +22,8 @@
 // const char* serverAddress = "192.168.40.194";
 
 // Timo's WiFi credentials
-const char* ssid = "aced7hs";
-const char* password = "a123456b";
+const char* ssid = "ssid";
+const char* password = "pw";
 const char* serverAddress = "192.168.146.49"; // IP address of your Raspberry Pi Flask server
 
 const int serverPort = 5000; // Port on which Flask server is running

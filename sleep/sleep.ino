@@ -3,8 +3,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "xxxxx";
-const char* password = "xxxxx";
+const char* ssid = "ssid";
+const char* password = "pw";
 const char* serverAddress = "192.168.146.49"; // IP address of your Raspberry Pi Flask server
 const int serverPort = 5000; // Port on which Flask server is running
 
